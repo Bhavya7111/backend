@@ -1,0 +1,11 @@
+# Node modules (don’t commit)
+node_modules/
+
+# Frontend build
+frontend/build/
+
+# Nginx build folder
+nginx/build/
+
+# Environment files
+.env
