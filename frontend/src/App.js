@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import api from "./api";
 
 function App() {
-  const [message, setMessage] = useState('Loading...');
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch('/api/data')
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message))
-      .catch(() => setMessage('Error connecting to backend'));
+    api.get("/")
+      .then(res => setMessage(res.data))
+      .catch(() => setError("Error connecting to backend"));
   }, []);
 
   return (
-    <div style={{ padding: '40px', fontFamily: 'Arial' }}>
+    <div>
       <h1>DevOps Practice Project</h1>
-      <p>{message}</p>
+      {message && <p>{message}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
