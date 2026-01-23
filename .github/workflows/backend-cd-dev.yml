@@ -23,9 +23,11 @@ jobs:
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
 
-      - name: Update backend image (DEV)
+      - name: Deploy backend to DEV
         run: |
-          kubectl set image deployment/backend backend=karanam08/backend:dev -n dev
+          kubectl set image deployment/backend \
+            backend=karanam08/backend:dev \
+            -n dev
 
       - name: Verify rollout
         run: |
