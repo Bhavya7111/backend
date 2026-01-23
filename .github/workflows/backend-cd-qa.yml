@@ -1,0 +1,27 @@
+name: Backend CD - QA
+
+on:
+  workflow_run:
+    workflows: ["Backend CI - QA"]
+    types:
+      - completed
+
+jobs:
+  backend-cd-qa:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+
+      - name: Update backend image (QA)
+        run: |
+          kubectl set image deployment/backend backend=karanam08/backend:qa -n qa

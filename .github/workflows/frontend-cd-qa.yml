@@ -1,0 +1,27 @@
+name: Frontend CD - QA
+
+on:
+  workflow_run:
+    workflows: ["Frontend CI - QA"]
+    types:
+      - completed
+
+jobs:
+  frontend-cd-qa:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+
+      - name: Update frontend image (QA)
+        run: |
+          kubectl set image deployment/frontend-deployment frontend=karanam08/frontend:qa -n qa
