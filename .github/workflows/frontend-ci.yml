@@ -21,10 +21,10 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
+      - name: Build Frontend Docker image
         run: |
           docker build -t karanam08/frontend:latest ./frontend
 
-      - name: Push Docker image
+      - name: Push Frontend Docker image
         run: |
           docker push karanam08/frontend:latest
