@@ -7,15 +7,17 @@ on:
       - completed
 
 jobs:
-  frontend-cd-qa:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v4
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: v1.34.1
 
       - name: Configure kubeconfig
         run: |
@@ -25,3 +27,7 @@ jobs:
       - name: Update frontend image (QA)
         run: |
           kubectl set image deployment/frontend-deployment frontend=karanam08/frontend:qa -n qa
+
+      - name: Verify rollout
+        run: |
+          kubectl rollout status deployment/frontend-deployment -n qa
