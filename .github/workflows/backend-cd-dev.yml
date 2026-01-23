@@ -1,0 +1,32 @@
+name: Backend CD - Dev
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: v1.34.1
+
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+      - name: Update backend image (DEV)
+        run: |
+          kubectl set image deployment/backend backend=karanam08/backend:dev -n dev
+
+      - name: Verify rollout
+        run: |
+          kubectl rollout status deployment/backend -n dev
