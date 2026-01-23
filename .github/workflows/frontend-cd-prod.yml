@@ -23,9 +23,9 @@ jobs:
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
 
-      - name: Deploy frontend to PROD
+      - name: Update frontend image (PROD)
         run: |
-          kubectl set image deployment/frontend-deployment frontend=karanam08/frontend:latest -n prod
+          kubectl set image deployment/frontend-deployment frontend=karanam08/frontend:prod -n prod
 
       - name: Verify rollout
         run: |
