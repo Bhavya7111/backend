@@ -25,8 +25,7 @@ jobs:
 
       - name: Deploy backend to Kubernetes
         run: |
-          kubectl apply -n dev -f k8s/backend-deployment.yaml
-          kubectl apply -n dev -f k8s/backend-service.yaml
+          kubectl set image deployment/backend backend=karanam08/backend:latest -n dev
 
       - name: Verify rollout
         run: |
